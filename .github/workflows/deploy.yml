@@ -5,8 +5,10 @@ on:
         branches:
             - main
 jobs:
-    build-image-to-ecr:
+    prepare-project-to-deploy:
         runs-on: ubuntu-latest
+        env:
+            BUILD_DIRECTORY: ${{secrets.MICRO_NAME}}-${{ github.sha }}
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -18,8 +20,17 @@ jobs:
 
             - name: Install dependencies and build project
               run: |
+                  # export BUILD_DIRECTORY=$BUILD_DIRECTORY
                   npm install
                   npm run build
+                  mkdir $BUILD_DIRECTORY/_next
+                  cp -r $BUILD_DIRECTORY/static $BUILD_DIRECTORY/_next/
+
+            - name: Upload files to artifact
+              uses: actions/upload-artifact@v3
+              with:
+                  name: build
+                  path: ./
 
             # - name: Configure AWS credentials
             #   uses: aws-actions/configure-aws-credentials@v4
