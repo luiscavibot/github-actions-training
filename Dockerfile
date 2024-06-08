@@ -1,5 +1,5 @@
 # Usa una imagen base oficial de Node.js de la versión 16
-FROM node:16-alpine AS builder
+FROM node:18-alpine AS builder
 
 # Establece el directorio de trabajo en /app
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Usa una imagen base más ligera para el entorno de producción
-FROM node:16-alpine AS runner
+FROM node:18-alpine AS runner
 
 # Establece el directorio de trabajo en /app
 WORKDIR /app
