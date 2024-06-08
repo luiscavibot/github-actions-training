@@ -23,6 +23,7 @@ jobs:
                   # export BUILD_DIRECTORY=$BUILD_DIRECTORY
                   npm install
                   npm run build
+                  echo "Build directory: $BUILD_DIRECTORY"
                   mkdir $BUILD_DIRECTORY/_next
                   cp -r $BUILD_DIRECTORY/static $BUILD_DIRECTORY/_next/
 
