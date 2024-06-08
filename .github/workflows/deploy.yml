@@ -9,18 +9,31 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Configure AWS credentials
-              uses: aws-actions/configure-aws-credentials@v4
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
               with:
-                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws-region: ${{ secrets.AWS_REGION }}
-            - name: Login to Amazon ECR
-              id: login-ecr
-              run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
-            - name: Build and push Docker image
+                  node-version: 18
+
+            - name: Install dependencies and build project
               run: |
-                  docker build -t ${{ secrets.PROJECT_NAME }} .
-                  docker tag ${{ secrets.PROJECT_NAME }}  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
-                  docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+                  npm install
+                  npm run build
+
+            # - name: Configure AWS credentials
+            #   uses: aws-actions/configure-aws-credentials@v4
+            #   with:
+            #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            #       aws-region: ${{ secrets.AWS_REGION }}
+
+            # - name: Login to Amazon ECR
+            #   id: login-ecr
+            #   run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
+
+            # - name: Build and push Docker image
+            #   run: |
+            #       docker build -t ${{ secrets.PROJECT_NAME }} .
+            #       docker tag ${{ secrets.PROJECT_NAME }}  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+            #       docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
