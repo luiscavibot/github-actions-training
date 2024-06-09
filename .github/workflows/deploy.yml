@@ -4,11 +4,11 @@ on:
     push:
         branches:
             - main
+env:
+    BUILD_DIRECTORY: ${{secrets.MICRO_NAME}}-${{ github.sha }}
 jobs:
     prepare-project-to-deploy:
         runs-on: ubuntu-latest
-        env:
-            BUILD_DIRECTORY: ${{secrets.MICRO_NAME}}-${{ github.sha }}
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -20,12 +20,12 @@ jobs:
 
             - name: Install dependencies and build project
               run: |
-                  # export BUILD_DIRECTORY=$BUILD_DIRECTORY
+                  # export BUILD_DIRECTORY=${{ env.BUILD_DIRECTORY }}
                   npm install
                   npm run build
-                  echo "Build directory: $BUILD_DIRECTORY"
-                  mkdir $BUILD_DIRECTORY/_next
-                  cp -r $BUILD_DIRECTORY/static $BUILD_DIRECTORY/_next/
+                  echo "Build directory >>>>> ${{ env.BUILD_DIRECTORY }}"
+                  mkdir ${{ env.BUILD_DIRECTORY }}/_next
+                  cp -r ${{ env.BUILD_DIRECTORY }}/static ${{ env.BUILD_DIRECTORY }}/_next/
 
             - name: Upload files to artifact
               uses: actions/upload-artifact@v3
@@ -47,17 +47,13 @@ jobs:
               with:
                   name: build
                   path: .
-            # - name: Configure AWS credentials
-            #   uses: aws-actions/configure-aws-credentials@v4
-            #   with:
-            #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #       aws-region: ${{ secrets.AWS_REGION }}
-            - name: Upload files to S3
-              run: |
-                  echo ">>>>>>ls"
-                  ls -a
-
+            - name: Configure AWS credentials
+              uses: shallwefootball/s3-upload-action@master
+              with:
+                  aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws_bucket: ${{ secrets.AWS_BUCKET }}
+                  source_dir: ${{ env.BUILD_DIRECTORY }}/_next
             # - name: Configure AWS credentials
             #   uses: aws-actions/configure-aws-credentials@v4
             #   with:
