@@ -26,12 +26,14 @@ jobs:
                   echo "Build directory: $BUILD_DIRECTORY"
                   mkdir $BUILD_DIRECTORY/_next
                   cp -r $BUILD_DIRECTORY/static $BUILD_DIRECTORY/_next/
+                  echo "listar"
+                  ls -a
 
-            - name: Upload files to artifact
-              uses: actions/upload-artifact@v3
-              with:
-                  name: build
-                  path: ./
+            # - name: Upload files to artifact
+            #   uses: actions/upload-artifact@v3
+            #   with:
+            #       name: build
+            #       path: ./
 
             # - name: Configure AWS credentials
             #   uses: aws-actions/configure-aws-credentials@v4
