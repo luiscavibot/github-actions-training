@@ -26,14 +26,37 @@ jobs:
                   echo "Build directory: $BUILD_DIRECTORY"
                   mkdir $BUILD_DIRECTORY/_next
                   cp -r $BUILD_DIRECTORY/static $BUILD_DIRECTORY/_next/
-                  echo "listar"
-                  ls -a
 
-            # - name: Upload files to artifact
-            #   uses: actions/upload-artifact@v3
+            - name: Upload files to artifact
+              uses: actions/upload-artifact@v3
+              with:
+                  name: build
+                  path: |
+                      .
+                      !node_modules
+                      !.git
+                      !.github/*
+                      !src
+                      !Dockerfile
+    send-static-files-to-s3:
+        runs-on: ubuntu-latest
+        needs: prepare-project-to-deploy
+        steps:
+            - name: Download files from artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: build
+                  path: .
+            # - name: Configure AWS credentials
+            #   uses: aws-actions/configure-aws-credentials@v4
             #   with:
-            #       name: build
-            #       path: ./
+            #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            #       aws-region: ${{ secrets.AWS_REGION }}
+            - name: Upload files to S3
+              run: |
+                  echo ">>>>>>ls"
+                  ls -a
 
             # - name: Configure AWS credentials
             #   uses: aws-actions/configure-aws-credentials@v4
