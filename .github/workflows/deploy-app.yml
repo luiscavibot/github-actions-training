@@ -66,6 +66,8 @@ jobs:
         runs-on: ubuntu-latest
         needs: send-to-s3-and-ecr
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
