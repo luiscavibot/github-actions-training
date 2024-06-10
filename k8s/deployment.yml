@@ -13,7 +13,7 @@ spec:
                 app: home
         spec:
             containers:
-                - name: nextjs-container
+                - name: home-container
                   image: public.ecr.aws/o6i8p2j4/storefront-poc:latest
                   ports:
                       - containerPort: 3000
