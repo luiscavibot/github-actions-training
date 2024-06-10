@@ -18,6 +18,8 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Install dependencies and build project
+              env:
+                  BUILD_DIRECTORY: ${{env.BUILD_DIRECTORY}}
               run: |
                   npm install
                   npm run build
