@@ -78,4 +78,4 @@ jobs:
               run: |
                   aws eks --region us-east-2 update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
                   kubectl apply -f k8s/
-                  kubectl rollout restart deployment k8s/deployment.yml
+                  kubectl rollout restart deployment home
