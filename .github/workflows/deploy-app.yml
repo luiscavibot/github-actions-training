@@ -59,14 +59,10 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Verify the deployment files to build image
-              run: |
-                  echo ">>> Directorio de build..."
-                  echo ">>> ${BUILD_DIRECTORY}"
-                  cat next.config.mjs
-
             - name: Build and push Docker image
               run: |
+                  echo ">>> Directorios antes de construir la imagen..."
+                  ls -al
                   docker build -t ${{ secrets.PROJECT_NAME }} . --build-arg BUILD_DIRECTORY=${{ env.BUILD_DIRECTORY }}
                   docker tag ${{ secrets.PROJECT_NAME }}:latest  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:latest
                   docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:latest
