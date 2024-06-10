@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: ${PROJECT_NAME}
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: ${PROJECT_NAME}
+    template:
+        metadata:
+            labels:
+                app: ${PROJECT_NAME}
+        spec:
+            containers:
+                - name: nextjs-container
+                  image: public.ecr.aws/${AWS_ACCOUNT_ALIAS}/${PROJECT_NAME}:{SHA}
+                  ports:
+                      - containerPort: 8080
+                  env:
+                      - name: NODE_ENV
+                        value: 'production'

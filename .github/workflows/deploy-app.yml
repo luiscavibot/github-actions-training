@@ -20,10 +20,8 @@ jobs:
 
             - name: Install dependencies and build project
               run: |
-                  # export BUILD_DIRECTORY=${{ env.BUILD_DIRECTORY }}
                   npm install
                   npm run build
-                  echo "Build directory >>>>> ${{ env.BUILD_DIRECTORY }}"
                   mkdir ${{ env.BUILD_DIRECTORY }}/_next
                   cp -r ${{ env.BUILD_DIRECTORY }}/static ${{ env.BUILD_DIRECTORY }}/_next/
 
@@ -38,7 +36,7 @@ jobs:
                       !.github/*
                       !src
                       !Dockerfile
-    send-static-files-to-s3:
+    send-to-s3-and-ecr:
         runs-on: ubuntu-latest
         needs: prepare-project-to-deploy
         steps:
@@ -55,19 +53,28 @@ jobs:
                   aws-region: ${{ secrets.AWS_REGION }}
             - name: Upload files to S3
               run: aws s3 cp ${{ env.BUILD_DIRECTORY }}/_next s3://${{secrets.S3_BUCKET_NAME}}/${{env.BUILD_DIRECTORY}}/_next --recursive
-            # - name: Configure AWS credentials
-            #   uses: aws-actions/configure-aws-credentials@v4
-            #   with:
-            #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            #       aws-region: ${{ secrets.AWS_REGION }}
-
-            # - name: Login to Amazon ECR
-            #   id: login-ecr
-            #   run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
-
-            # - name: Build and push Docker image
-            #   run: |
-            #       docker build -t ${{ secrets.PROJECT_NAME }} .
-            #       docker tag ${{ secrets.PROJECT_NAME }}  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
-            #       docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+            - name: Login to Amazon ECR
+              run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
+            - name: Build and push Docker image
+              run: |
+                  docker build -t ${{ secrets.PROJECT_NAME }} .
+                  docker tag ${{ secrets.PROJECT_NAME }}  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+                  docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+    deploy-to-eks:
+        runs-on: ubuntu-latest
+        needs: send-to-s3-and-ecr
+        steps:
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ${{ secrets.AWS_REGION }}
+            - name: Deploy to Amazon EKS
+              env:
+                  PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+                  AWS_ACCOUNT_ALIAS: ${{ secrets.AWS_ACCOUNT_ALIAS }}
+                  SHA: ${{ github.sha }}
+              run: |
+                  aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+                  kubectl apply -f k8s/
