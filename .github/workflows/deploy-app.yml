@@ -67,7 +67,7 @@ jobs:
 
             - name: Build and push Docker image
               run: |
-                  docker build -t ${{ secrets.PROJECT_NAME }} .
+                  docker build -t ${{ secrets.PROJECT_NAME }} . --build-arg BUILD_DIRECTORY=${{ env.BUILD_DIRECTORY }}
                   docker tag ${{ secrets.PROJECT_NAME }}:latest  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:latest
                   docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:latest
     deploy-to-eks:
