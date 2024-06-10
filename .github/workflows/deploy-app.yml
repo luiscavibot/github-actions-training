@@ -80,5 +80,9 @@ jobs:
                   AWS_ACCOUNT_ALIAS: ${{ secrets.AWS_ACCOUNT_ALIAS }}
                   SHA: ${{ github.sha }}
               run: |
+                  sudo apt-get install gettext -y
+                  envsubst < k8s/service.yml | kubectl apply -f -
+                  envsubst < k8s/deployment.yml | kubectl apply -f -
+                  envsubst < k8s/ingress.yml | kubectl apply -f -
                   aws eks --region us-east-2 update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
                   kubectl apply -f k8s/
