@@ -60,8 +60,8 @@ jobs:
             - name: Build and push Docker image
               run: |
                   docker build -t ${{ secrets.PROJECT_NAME }} .
-                  docker tag ${{ secrets.PROJECT_NAME }}:latest  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
-                  docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+                  docker tag ${{ secrets.PROJECT_NAME }}:latest  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:latest
+                  docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:latest
     deploy-to-eks:
         runs-on: ubuntu-latest
         needs: send-to-s3-and-ecr
@@ -75,14 +75,7 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-2
             - name: Deploy to Amazon EKS
-              env:
-                  PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
-                  AWS_ACCOUNT_ALIAS: ${{ secrets.AWS_ACCOUNT_ALIAS }}
-                  SHA: ${{ github.sha }}
               run: |
-                  sudo apt-get install gettext -y
-                  envsubst < k8s/service.yml | kubectl apply -f -
-                  envsubst < k8s/deployment.yml | kubectl apply -f -
-                  envsubst < k8s/ingress.yml | kubectl apply -f -
                   aws eks --region us-east-2 update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
                   kubectl apply -f k8s/
+                  kubectl rollout restart k8s/deployment.yml

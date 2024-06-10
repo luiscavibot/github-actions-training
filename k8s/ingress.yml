@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-    name: ${PROJECT_NAME}-ingress
+    name: home-ingress
     annotations:
         kubernetes.io/ingress.class: alb
         alb.ingress.kubernetes.io/scheme: internet-facing
@@ -15,6 +15,6 @@ spec:
                     pathType: Prefix
                     backend:
                         service:
-                            name: ${PROJECT_NAME}-service
+                            name: home-service
                             port:
                                 number: 80
