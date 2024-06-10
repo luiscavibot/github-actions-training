@@ -66,8 +66,17 @@ jobs:
         runs-on: ubuntu-latest
         needs: send-to-s3-and-ecr
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+            - name: Download files from artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: build
+                  path: .
+            - name: Verify the deployment files
+              run: |
+                  echo "todos los archivos"
+                  ls -la
+                  echo "carpeta de archivos de build"
+                  ls -la ${{ env.BUILD_DIRECTORY }}
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
