@@ -58,7 +58,7 @@ jobs:
             - name: Build and push Docker image
               run: |
                   docker build -t ${{ secrets.PROJECT_NAME }} .
-                  docker tag ${{ secrets.PROJECT_NAME }}  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+                  docker tag ${{ secrets.PROJECT_NAME }}:latest  public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
                   docker push public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
     deploy-to-eks:
         runs-on: ubuntu-latest
