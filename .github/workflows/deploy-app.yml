@@ -45,6 +45,7 @@ jobs:
               with:
                   name: build
                   path: .
+
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
@@ -57,6 +58,13 @@ jobs:
               run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
             - name: Checkout code
               uses: actions/checkout@v4
+
+            - name: Verify the deployment files to build image
+              run: |
+                  echo ">>> Directorio de build..."
+                  echo ">>> ${BUILD_DIRECTORY}"
+                  cat next.config.mjs
+
             - name: Build and push Docker image
               run: |
                   docker build -t ${{ secrets.PROJECT_NAME }} .
@@ -71,10 +79,7 @@ jobs:
               with:
                   name: build
                   path: .
-            - name: Verify the deployment files
-              run: |
-                  echo ">>> Directorio de build..."
-                  echo ">>> ${BUILD_DIRECTORY}"
+
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
