@@ -58,9 +58,6 @@ jobs:
               run: aws s3 cp ${{ env.BUILD_DIRECTORY }}/_next s3://${{secrets.S3_BUCKET_NAME}}/${{env.BUILD_DIRECTORY}}/_next --recursive
             - name: Login to Amazon ECR
               run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
-            - name: Checkout code
-              uses: actions/checkout@v4
-
             - name: Build and push Docker image
               run: |
                   echo ">>> Directorios antes de construir la imagen..."
