@@ -73,8 +73,8 @@ jobs:
                   path: .
             - name: Verify the deployment files
               run: |
-                  echo >>> Directorio de build...
-                  echo >>> ${BUILD_DIRECTORY}
+                  echo ">>> Directorio de build..."
+                  echo ">>> ${BUILD_DIRECTORY}"
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@v4
               with:
