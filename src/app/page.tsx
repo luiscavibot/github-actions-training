@@ -32,7 +32,7 @@ export default function Home() {
 
 			<div className="mb-32 grid text-center">
 				<h1 className="text-3xl">
-					STORE FRONT Continuous Deployment -TEST 1{' '}
+					STORE FRONT Continuous Deployment -TEST 2{' '}
 				</h1>
 			</div>
 		</main>

@@ -13,7 +13,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: 18
+                  node-version: 20
             - name: Checkout code
               uses: actions/checkout@v4
 
@@ -29,7 +29,7 @@ jobs:
                   cp -r ${{ env.BUILD_DIRECTORY }}/static ${{ env.BUILD_DIRECTORY }}/_next/
 
             - name: Upload files to artifact
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                   name: build
                   path: |
@@ -43,7 +43,7 @@ jobs:
         needs: prepare-project-to-deploy
         steps:
             - name: Download files from artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: build
                   path: .
@@ -70,7 +70,7 @@ jobs:
         needs: send-to-s3-and-ecr
         steps:
             - name: Download files from artifact
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                   name: build
                   path: .
