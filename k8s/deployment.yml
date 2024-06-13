@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
                 - name: home-container
-                  image: public.ecr.aws/o6i8p2j4/storefront-poc:latest
+                  image: public.ecr.aws/o6i8p2j4/storefront-poc:latestxxxxxxxxxx
                   ports:
                       - containerPort: 3000
                   env:
