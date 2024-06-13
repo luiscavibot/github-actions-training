@@ -88,6 +88,6 @@ jobs:
                   kubectl rollout restart deployment home
                   kubectl rollout status deployment/home --namespace=default
             - name: Clean up S3 bucket
-              if: failure()
+              if: success()
               run: |
                   echo ">>> Limpiando archivos estáticos en S3..."
