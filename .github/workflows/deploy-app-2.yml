@@ -54,7 +54,7 @@ jobs:
                   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: ${{ secrets.AWS_REGION }}
-            - name: Upload files to S3
+            - name: Upload static files to S3
               run: aws s3 cp ${{ env.BUILD_DIRECTORY }}/_next s3://${{secrets.S3_BUCKET_NAME}}/${{env.BUILD_DIRECTORY}}/_next --recursive
             - name: Login to Amazon ECR
               run: aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin public.ecr.aws/${{ secrets.AWS_ACCOUNT_ALIAS }}
@@ -89,5 +89,21 @@ jobs:
                   kubectl rollout status deployment/home --namespace=default
             - name: Clean up S3 bucket
               if: success()
+              env:
+                  BUILD_DIRECTORY: ${{env.BUILD_DIRECTORY}}
+                  S3_BUCKET_NAME: ${{secrets.S3_BUCKET_NAME}}
               run: |
                   echo ">>> Limpiando archivos estáticos en S3..."
+                  {
+                      # Script para eliminar objetos que no tengan el prefijo BUILD_DIRECTORY
+                      aws s3api list-objects-v2 --bucket "$S3_BUCKET_NAME" --query "Contents[].Key" --output text | while read -r key; do
+                          if [[ -n "$key" && "$key" != "$BUILD_DIRECTORY"* ]]; then
+                              echo "Eliminando objeto: $key"
+                              aws s3api delete-object --bucket "$S3_BUCKET_NAME" --key "$key"
+                          fi
+                      done
+                      echo "El proceso ha sido completado exitosamente."
+                  } || {
+                      echo "Ocurrió un error durante la limpieza de archivos en S3."
+                      exit 1
+                  }
