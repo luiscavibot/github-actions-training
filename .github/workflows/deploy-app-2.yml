@@ -98,6 +98,8 @@ jobs:
                       # Script para eliminar objetos que no tengan el primer path igual a BUILD_DIRECTORY
                       aws s3api list-objects-v2 --bucket "$S3_BUCKET_NAME" --query "Contents[].Key" --output text | while read -r key; do
                           first_path=$(echo "$key" | cut -d'/' -f1)
+                          echo ">>> Primer path: $first_path"
+                          echo ">>> BUILD_DIRECTORY: $BUILD_DIRECTORY"
                           if [[ -n "$key" && "$first_path" != "$BUILD_DIRECTORY" ]]; then
                               echo "Eliminando objeto: $key"
                               aws s3api delete-object --bucket "$S3_BUCKET_NAME" --key "$key"
