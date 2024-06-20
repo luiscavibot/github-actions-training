@@ -96,7 +96,7 @@ jobs:
                   echo ">>> Limpiando archivos estáticos en S3..."
                   {
                       # Script para eliminar objetos que no tengan el primer path igual a BUILD_DIRECTORY
-                      aws s3api list-objects-v2 --bucket "$S3_BUCKET_NAME" --query "Contents[].Key" --output text | while read -r key; do
+                      aws s3api list-objects-v2 --bucket "$S3_BUCKET_NAME" --query "Contents[].Key" --output text | tr '\t' '\n' | while read -r key; do
                           echo ">>> EL valor de la KEY a analizar: $key"
                           first_path=$(echo "$key" | cut -d'/' -f1)
                           if [[ -n "$key" && "$first_path" != "$BUILD_DIRECTORY" ]]; then
