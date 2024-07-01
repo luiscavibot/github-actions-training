@@ -34,7 +34,8 @@
     ".next/types/**/*.ts",
     "build/types/**/*.ts",
     "undefined/types/**/*.ts",
-    "build-in-local/types/**/*.ts"
+    "build-in-local/types/**/*.ts",
+    "home/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
