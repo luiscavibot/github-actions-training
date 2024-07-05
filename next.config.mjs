@@ -8,6 +8,7 @@ const nextConfig = {
 	assetPrefix: isProd
 		? `https://d13jgt8gwoao83.cloudfront.net/${buildDirectory}`
 		: undefined,
+	compress: false,
 };
 
 export default nextConfig;
