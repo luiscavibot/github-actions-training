@@ -1,6 +1,10 @@
+// src/app/page.tsx
 import Image from 'next/image';
+import { getHost } from '../utils/getHost';
 
-export default function Home() {
+export default async function Home() {
+	const host = getHost();
+
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
 			<div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -34,6 +38,7 @@ export default function Home() {
 				<h1 className="text-3xl">
 					STORE FRONT Continuous Deployment -TEST 5{' '}
 				</h1>
+				<h1 className="text-5xl  mb-4">Host: {host}</h1>
 			</div>
 		</main>
 	);
