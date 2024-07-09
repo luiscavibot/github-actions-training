@@ -29,22 +29,22 @@ spec:
         #                     port:
         #                         number: 80
         - host: uno.unmsm.link
-            http:
-                paths:
-                    - path: /
-                      pathType: Prefix
-                      backend:
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
                         service:
                             name: home-service
                             port:
-                            name: http
+                                name: http
         - host: dos.unmsm.link
-            http:
-                paths:
-                    - path: /
-                      pathType: Prefix
-                      backend:
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
                         service:
                             name: home-service
                             port:
-                            name: http
+                                name: http
