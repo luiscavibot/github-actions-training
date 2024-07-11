@@ -9,6 +9,14 @@ const nextConfig = {
 		? `https://d13jgt8gwoao83.cloudfront.net/${buildDirectory}`
 		: undefined,
 	compress: false,
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: '**',
+			},
+		],
+	},
 };
 
 export default nextConfig;

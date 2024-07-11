@@ -32,6 +32,12 @@ export default async function Home() {
 					height={37}
 					priority
 				/>
+				<Image
+					src="https://content.easy.cl/cms/cl/EasyWeb/view_version/66674bea99b69a3cc84dac13/4710d508-9fc1-4c01-82f0-9b74377b68b7.webp"
+					alt="Easy Logo"
+					width={1850}
+					height={542}
+				/>
 			</div>
 
 			<div className="mb-32 grid text-center">
