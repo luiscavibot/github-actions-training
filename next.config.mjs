@@ -17,6 +17,19 @@ const nextConfig = {
 			},
 		],
 	},
+	async headers() {
+		return [
+			{
+				source: '/(.*)',
+				headers: [
+					{
+						key: 'Cache-Control',
+						value: 'public, s-maxage=59; stale-while-revalidate=60; includeSubDomains; preload',
+					},
+				],
+			},
+		];
+	},
 };
 
 export default nextConfig;
