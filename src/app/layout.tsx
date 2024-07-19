@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -14,6 +15,16 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	useEffect(() => {
+		if (window.location.pathname === '/no_null.html') {
+			// Utiliza la API history para manipular la URL sin redireccionar
+			const newUrl =
+				window.location.origin +
+				window.location.pathname.replace('/no_null.html', '');
+			window.history.replaceState({}, document.title, newUrl);
+		}
+	}, []);
+
 	return (
 		<html lang="en">
 			<body className={inter.className}>{children}</body>
