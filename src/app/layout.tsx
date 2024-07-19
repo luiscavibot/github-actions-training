@@ -1,3 +1,4 @@
+'use client'; // Agrega esta línea al inicio del archivo
 import { useEffect } from 'react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
