@@ -1,9 +1,20 @@
-// src/app/page.tsx
-import Image from 'next/image';
-import { getHost } from '../utils/getHost';
+'use client';
 
-export default async function Home() {
-	const host = getHost();
+import Image from 'next/image';
+// import { getHost } from '../utils/getHost';
+import { useEffect } from 'react';
+
+export default function Home() {
+	useEffect(() => {
+		if (window.location.pathname === '/no_null.html') {
+			// Utiliza la API history para manipular la URL sin redireccionar
+			const newUrl =
+				window.location.origin +
+				window.location.pathname.replace('/no_null.html', '');
+			window.history.replaceState({}, document.title, newUrl);
+		}
+	}, []);
+	// const host = getHost();
 
 	return (
 		<main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -18,7 +29,7 @@ export default async function Home() {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						By EASY
+						By LCV
 					</a>
 				</div>
 			</div>
@@ -42,9 +53,9 @@ export default async function Home() {
 
 			<div className="mb-32 grid text-center">
 				<h1 className="text-3xl">
-					STORE FRONT Continuous Deployment -TEST 5{' '}
+					STORE FRONT Continuous Deployment -TEST 6{' '}
 				</h1>
-				<h1 className="text-5xl  mb-4">Host: {host}</h1>
+				{/* <h1 className="text-5xl  mb-4">Host: {host}</h1> */}
 			</div>
 		</main>
 	);
