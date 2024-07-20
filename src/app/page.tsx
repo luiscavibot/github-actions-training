@@ -5,15 +5,15 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function Home() {
-	useEffect(() => {
-		if (window.location.pathname === '/no_null.html') {
-			// Utiliza la API history para manipular la URL sin redireccionar
-			const newUrl =
-				window.location.origin +
-				window.location.pathname.replace('/no_null.html', '');
-			window.history.replaceState({}, document.title, newUrl);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (window.location.pathname === '/no_null.html') {
+	// 		// Utiliza la API history para manipular la URL sin redireccionar
+	// 		const newUrl =
+	// 			window.location.origin +
+	// 			window.location.pathname.replace('/no_null.html', '');
+	// 		window.history.replaceState({}, document.title, newUrl);
+	// 	}
+	// }, []);
 	// const host = getHost();
 
 	return (
