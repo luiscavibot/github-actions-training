@@ -17,27 +17,27 @@ metadata:
         # alb.ingress.kubernetes.io/scheme: internet-facing
         # alb.ingress.kubernetes.io/target-type: ip
         # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-# spec:
-#     rules:
-#         # - http:
-#         #       paths:
-#         #           - path: /
-#         #             pathType: Prefix
-#         #             backend:
-#         #                 service:
-#         #                     name: home-service
-#         #                     port:
-#         #                         number: 80
-#         - host: uno.unmsm.link
-#           http:
-#               paths:
-#                   - path: /
-#                     pathType: Prefix
-#                     backend:
-#                         service:
-#                             name: home-service
-#                             port:
-#                                 name: http
+spec:
+    rules:
+        # - http:
+        #       paths:
+        #           - path: /
+        #             pathType: Prefix
+        #             backend:
+        #                 service:
+        #                     name: home-service
+        #                     port:
+        #                         number: 80
+        - host: uno.unmsm.link
+          http:
+              paths:
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: home-service
+                            port:
+                                name: http
 #         - host: dos.unmsm.link
 #           http:
 #               paths:
@@ -48,28 +48,28 @@ metadata:
 #                             name: home-service
 #                             port:
 #                                 name: http
-spec:
-    rules:
-        - http:
-              paths:
-                  #   - path: /no_null.html
-                  #     pathType: Exact
-                  #     backend:
-                  #         service:
-                  #             name: home-service
-                  #             port:
-                  #                 number: 80
-                  #   - path: /principal
-                  #     pathType: Prefix
-                  #     backend:
-                  #         service:
-                  #             name: home-service
-                  #             port:
-                  #                 number: 80
-                  - path: /
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: home-service
-                            port:
-                                number: 80
+# spec:
+#     rules:
+#         - http:
+#               paths:
+#   - path: /no_null.html
+#     pathType: Exact
+#     backend:
+#         service:
+#             name: home-service
+#             port:
+#                 number: 80
+#   - path: /principal
+#     pathType: Prefix
+#     backend:
+#         service:
+#             name: home-service
+#             port:
+#                 number: 80
+#   - path: /
+#     pathType: Prefix
+#     backend:
+#         service:
+#             name: home-service
+#             port:
+#                 number: 80
