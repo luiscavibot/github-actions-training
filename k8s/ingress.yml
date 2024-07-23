@@ -19,19 +19,10 @@ metadata:
         # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
 spec:
     rules:
-        # - http:
-        #       paths:
-        #           - path: /
-        #             pathType: Prefix
-        #             backend:
-        #                 service:
-        #                     name: home-service
-        #                     port:
-        #                         number: 80
         - host: uno.unmsm.link
           http:
               paths:
-                  - path: /
+                  - path: /principal
                     pathType: Prefix
                     backend:
                         service:
