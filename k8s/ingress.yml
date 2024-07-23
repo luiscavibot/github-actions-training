@@ -52,20 +52,20 @@ spec:
     rules:
         - http:
               paths:
-                  - path: /no_null.html
-                    pathType: Exact
-                    backend:
-                        service:
-                            name: home-service
-                            port:
-                                number: 80
-                  - path: /principal
-                    pathType: Prefix
-                    backend:
-                        service:
-                            name: home-service
-                            port:
-                                number: 80
+                  #   - path: /no_null.html
+                  #     pathType: Exact
+                  #     backend:
+                  #         service:
+                  #             name: home-service
+                  #             port:
+                  #                 number: 80
+                  #   - path: /principal
+                  #     pathType: Prefix
+                  #     backend:
+                  #         service:
+                  #             name: home-service
+                  #             port:
+                  #                 number: 80
                   - path: /
                     pathType: Prefix
                     backend:
