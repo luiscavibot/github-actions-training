@@ -36,7 +36,7 @@ metadata:
 #                     backend:
 #                         service:
 #                             name: home-service
-#                             port:z
+#                             port:
 #                                 name: http
 #         - host: dos.unmsm.link
 #           http:
@@ -58,11 +58,11 @@ spec:
                         service:
                             name: home-service
                             port:
-                                name: http
+                                number: 80
                   - path: /principal
                     pathType: Prefix
                     backend:
                         service:
                             name: home-service
                             port:
-                                name: http
+                                number: 80
