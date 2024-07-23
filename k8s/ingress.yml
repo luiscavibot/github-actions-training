@@ -17,22 +17,49 @@ metadata:
         # alb.ingress.kubernetes.io/scheme: internet-facing
         # alb.ingress.kubernetes.io/target-type: ip
         # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+# spec:
+#     rules:
+#         # - http:
+#         #       paths:
+#         #           - path: /
+#         #             pathType: Prefix
+#         #             backend:
+#         #                 service:
+#         #                     name: home-service
+#         #                     port:
+#         #                         number: 80
+#         - host: uno.unmsm.link
+#           http:
+#               paths:
+#                   - path: /
+#                     pathType: Prefix
+#                     backend:
+#                         service:
+#                             name: home-service
+#                             port:z
+#                                 name: http
+#         - host: dos.unmsm.link
+#           http:
+#               paths:
+#                   - path: /
+#                     pathType: Prefix
+#                     backend:
+#                         service:
+#                             name: home-service
+#                             port:
+#                                 name: http
 spec:
     rules:
-        - host: uno.unmsm.link
-          http:
+        - http:
               paths:
-                  - path: /principal
-                    pathType: Prefix
+                  - path: /no_null.html
+                    pathType: Exact
                     backend:
                         service:
                             name: home-service
                             port:
                                 name: http
-        - host: dos.unmsm.link
-          http:
-              paths:
-                  - path: /
+                  - path: /principal
                     pathType: Prefix
                     backend:
                         service:
